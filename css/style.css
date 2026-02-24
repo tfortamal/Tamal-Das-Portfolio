@@ -1,0 +1,670 @@
+/* color pallet */
+:root {
+    --highlightCol: #ff5900;
+    --font: #191919;
+    --backGrountCol: #fcfaf9;
+
+    /* cursor grid */
+    --cursor-cell: 3rem;
+    --cursor-size: 1.125rem;
+    --inline-icon-size: 2.6rem;
+}
+
+@font-face {
+    font-family: "Anton";
+    src: url("../assets/fonts/Anton-Regular.ttf");
+}
+@font-face {
+    font-family: "instrument";
+    src: url("../assets/fonts/instrument.ttf");
+}
+@font-face {
+    font-family: "Dream";
+    src: url("../assets/fonts/Dream.ttf");
+}
+@font-face {
+    font-family: "inter";
+    src: url("../assets/fonts/Inter.ttf");
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    min-height: 100%;
+    width: 100%;
+    font-family: "Dream";
+    background-color: transparent;
+    color: var(--font);
+    overflow-x: hidden;
+}
+
+/* ===== Full-viewport panels ===== */
+section{
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* ===== Nav (UNCHANGED) ===== */
+.pageNav{
+    font-size: 1.5rem;
+    color: var(--highlightCol);
+    position: fixed;
+    top: 0%;
+    width: 100vw;
+    height: 5vh;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 1em;
+    z-index: 999;
+}
+.navLogo{
+    padding-left: .3rem;
+    padding-right: .3rem;
+    padding-top: .3rem;
+    margin-top: .3rem;
+    font-size: 1.5rem;
+
+    text-decoration: none;
+    font-family: "inter";
+    font-weight: 700;
+    color: var(--backGrountCol);
+}
+.navLogo a{
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--backGrountCol);
+}
+.navToggleButton{
+    padding: .7vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ballButton{
+    position: relative;
+    transform: none;
+    outline: none;
+    transform-origin: 50% 50% 0px;
+    background-color: var(--highlightCol);
+    border: 0.125rem solid var(--font);
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 250ms ease-out;
+    cursor: pointer;
+}
+
+/* ===== Nav overlay (UNCHANGED) ===== */
+.navOverlay{
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--backGrountCol);
+    color: var(--font);
+    position: fixed;
+    z-index: 100;
+    transform: translateX(100vw);
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+    grid-column: 1fr;
+    grid-template-areas:
+    "navMenu"
+    "subNav";
+}
+.navMenu{
+    grid-area: navMenu;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 80vh;
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.menuItem{
+    display: flex;
+    cursor: pointer;
+}
+.menuItem p{
+    color: var(--font);
+    position: relative;
+    text-align: center;
+    font-size: 12vw;
+    line-height: 80%;
+    will-change: transform;
+    transition: letter-spacing 0.31;
+    transition: all 0.2s ease-out;
+    font-family: "Dream";
+}
+.menuItem a{
+    color: var(--font);
+    text-decoration: none;
+}
+.menuItem p:hover{
+    letter-spacing: .067em;
+    transition: all 0.2s ease-out;
+}
+.subNav{
+    grid-area: subNav;
+    width: 60vw;
+    height: 10vh;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-areas:
+    "subNavItem1 subNavItem2 subNavItem3 subNavItem4";
+}
+.subNavItem1{ text-align: center; grid-area: subNavItem1; }
+.subNavItem2{ text-align: center; grid-area: subNavItem2; }
+.subNavItem3{ text-align: center; grid-area: subNavItem3; }
+.subNavItem4{ text-align: center; grid-area: subNavItem4; }
+.subNav p{
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1.25rem;
+}
+.subNav a{
+    color: var(--font);
+    text-decoration: none;
+}
+
+/* ===== Cursor grid square (Landing effect) ===== */
+.cursorGridSquare{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background: var(--highlightCol);
+    z-index: 9999;
+    pointer-events: none;
+    transform: translate3d(-100px, -100px, 0);
+    opacity: 0;
+    border-radius: 0.125rem;
+}
+
+
+/* ===== Landing Section ===== */
+.landingSection{
+    width: 100%;
+    min-height: 100vh;
+    height: 100vh;
+    position: relative;
+    background: transparent;
+}
+
+.landingVideo{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    background: #000;
+}
+#heroVideo{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.landingContent{
+    position: relative;
+    z-index: 2;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 1fr;           /* One column */
+    grid-template-rows: repeat(5, 1fr);   /* Five rows */
+    grid-template-areas:
+        "LandingHeadlineContainer"
+        "LandingHeadlineContainer"
+        "LandingHeadlineContainer"
+        "LandingCenterHint"
+        "LandingCenterHint";
+    height: 100vh;
+}
+
+.landingHeadlineContainer{
+    grid-area: LandingHeadlineContainer;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.landingHeadline{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    margin-left: 2vh;
+    align-self: start;
+    justify-self: start;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    /* font-size: 4.5rem; */
+    font-size: clamp(4.5rem, 10vw, 10rem);
+    font-family: "inter";
+    color: var(--backGrountCol);
+    display: inline-block;
+    max-width: 8ch;
+    white-space: normal;
+}
+.landingCenterHint{
+    grid-area: LandingCenterHint;
+    width: 100%;
+    max-width: 40rem;
+    padding-left: 2vh;
+    font-family: "inter";
+    font-size: 1.5625rem;
+    font-weight: 300;
+    opacity: 0.95;
+    user-select: none;
+    color: var(--backGrountCol);
+    height: 30vh;
+    margin: 5vh;
+}
+
+.scrollIcon{
+    width: var(--inline-icon-size);   /* adjust size here */
+    height: var(--inline-icon-size);
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+}
+
+/* ===== Works Section ===== */
+.workSection{
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--backGrountCol);
+    color: var(--font);
+}
+
+.workTitleContainer{
+    min-height: 30vh;
+    padding: 5vh 6vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.workSectionTitle{
+    font-family: "Dream", Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 0.95;
+    margin: 0;
+    font-size: 3.25rem;
+    font-size: clamp(3.25rem, 8vw, 6.5rem);
+}
+
+.workSectionSubtitle{
+    margin: 0.25rem 0 0 0; /* keep very small gap */
+    font-family: "inter";
+    font-weight: 400;
+    font-size: 1.35rem;
+    line-height: 1.2;
+    opacity: 0.85;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* thunder icon beside subtitle (match scroll icon size) */
+.moji{
+    width: 2rem;
+    height: 2rem;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* ===== Works: Project cards ===== */
+.projectShowcase{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
+    padding: 0 6vw 8vh 6vw;
+}
+
+[class^="projectCard"]{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    border: 0.0625rem solid rgba(25, 25, 25, 0.18);
+    background-color: var(--backGrountCol);
+    overflow: hidden;
+}
+
+.projectMedia{
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background-color: rgba(25, 25, 25, 0.06);
+}
+
+.projectImage{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.projectInfo{
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+    gap: 1.25rem;
+}
+
+.projectTitle{
+    align-self: start;
+}
+
+.projectHeadline{
+    font-family: "Dream";
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    margin: 0;
+    font-size: 2.25rem;
+    font-size: clamp(2rem, 2.6vw, 3rem);
+}
+
+.projectBottom{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.25rem;
+    align-items: end;
+    padding-top: 1.25rem;
+    border-top: 0.0625rem solid rgba(25, 25, 25, 0.25);
+}
+
+.projectMeta{
+    display: grid;
+    gap: 1rem;
+}
+
+.metaLabel {
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.metaValue {
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.projectView{
+    justify-self: end;
+    align-self: end;
+}
+
+.projectLink{
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--font);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 0.0625rem solid rgba(25, 25, 25, 0.35);
+    padding-bottom: 0.25rem;
+}
+
+.projectLink:hover{
+    border-bottom-color: var(--highlightCol);
+}
+
+.projectLinkIcon{
+    display: inline-block;
+    transform: translateY(-0.05em);
+}
+
+/* Responsive: stack image above info */
+@media (max-width: 900px){
+    [class^="projectCard"]{
+        grid-template-columns: 1fr;
+    }
+
+    .projectMedia{
+        aspect-ratio: 4 / 3;
+    }
+
+    .projectInfo{
+        padding: 1.25rem;
+        gap: 1.1rem;
+    }
+
+    .projectBottom{
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .projectView{
+        justify-self: start;
+    }
+}
+
+/* ==========================
+   SKILLS / EXPERIENCE SECTION
+   ========================== */
+.skillsSection{
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--backGrountCol);
+    color: var(--font);
+    display: flex;
+    align-items: center;
+}
+
+.skillExperienceWrapper{
+    width: 100%;
+    padding: 8vh 6vw;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+.skillsAndExpertiseTitle p,
+.workExperienceTitle p{
+    font-family: "Dream";
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+}
+
+.skills,
+.experiences{
+    width: 100%;
+}
+
+.skill p,
+.experience p{
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1.05rem;
+    line-height: 1.35;
+}
+
+/* Skills list dividers */
+#skillHR,
+.experiences hr,
+.hrSkill hr,
+.experienceHr hr{
+    border: none;
+    border-top: 0.0625rem solid rgba(25, 25, 25, 0.25);
+    margin: 0.85rem 0;
+}
+
+.experience{
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+/* ==========================
+   CONTACT SECTION
+   ========================== */
+
+.contactSection{
+    overflow: hidden;
+    background-color:var(--backGrountCol);
+    color:  var(--font);
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+.contactTitle{
+    font-family: "Anton";
+    text-transform: uppercase;
+    font-size: 30vh;
+    line-height: 27vh;
+}
+.hireButton{
+    background-color: var(--highlightCol);
+    color: var(--backGrountCol);
+    border: 2px var(--font) solid;
+    width: 15vw;
+    height: 15vw;
+    text-align: center;
+    border-radius: 50%;
+    position: absolute;
+    top: 35vh;
+    left: 42vw;
+    text-transform: uppercase;
+    font-size: 1vw;
+    font-weight: 700;
+    transition: all 250ms ease-out;
+    cursor: pointer;
+}
+.contactInfos{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    /* background-color: darkhighlightCol; */
+    align-items: center;
+    position: absolute;
+    top: 85vh;
+    padding: 1vh;
+    font-weight: 200;
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.info a{
+    color: var(--font);
+    text-decoration: none;
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+
+/* ==========================
+   WORK EXPERIENCE SECTION
+   ========================== */
+
+.workExperienceTitle{
+    margin-top: 2rem;
+}
+
+.experiences{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.experience{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+}
+
+.experience p:last-child{
+    opacity: 0.7;
+}
+
+@media (max-width: 450px){
+  /* Landing headline: prevent it from feeling too huge */
+  .landingHeadline{
+    transform: translateY(10vh);
+    font-size: clamp(5rem, 14vw, 5.25rem);
+    margin-left: 1rem;
+  }
+
+  /* Scroll hint: tighten spacing */
+  .landingCenterHint{
+    transform: translateY(20vh);
+    margin: 3vh 1rem;
+    font-size: 1.1rem;
+  }
+
+  .scrollIcon{
+    width: 2rem;
+    height: 2rem;
+  }
+
+  /* Works: reduce padding + card spacing */
+  .projectShowcase{
+    padding: 0 5vw 6vh 5vw;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .projectInfo{
+    padding: 1rem;
+  }
+
+  .projectHeadline{
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+  }
+  .contactTitle{
+        font-family: "Anton";
+        text-transform: uppercase;
+        font-size: 10vh;
+        line-height: 9.5vh;
+    }
+    .hireButton{
+        background-color: var(--highlightCol);
+        color: var(--font);
+        border: 2px var(--font) solid;
+        width: 20vw;
+        height: 20vw;
+        text-align: center;
+        border-radius: 50%;
+        position: absolute;
+        top: 45vh;
+        left: 42vw;
+        text-transform: uppercase;
+        font-size: 1vw;
+        font-weight: 700;
+    }
+}
