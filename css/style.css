@@ -437,16 +437,76 @@ section{
 }
 
 .projectLink:hover{
-    border-bottom-color: var(--highlightCol);
+    border-bottom-color: var(--highlightCol)
 }
 
 .projectLinkIcon{
     display: inline-block;
     transform: translateY(-0.05em);
 }
+.btn{
+    position: fixed;
+    right: 2.25rem;
+    bottom: 2.25rem;
+    z-index: 1200;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    padding: 0.9rem 1.15rem;
+    border-radius: 0.25rem;
+
+    background: rgba(252, 250, 249, 0.92);
+    color: var(--font);
+    border: 0.0625rem solid rgba(25, 25, 25, 0.22);
+
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+}
+.btn:hover{
+    transform: translateY(-4px);
+    background: var(--highlightCol);
+    color: var(--backGrountCol);
+    border-color: rgba(255, 89, 0, 0.55);
+    box-shadow: 0 14px 30px rgba(25, 25, 25, 0.22);
+}
+
+.btn:active{
+    transform: translateY(-2px) scale(0.98);
+}
+
+.btn:focus-visible{
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 89, 0, 0.25);
+}
 
 /* Responsive: stack image above info */
 @media (max-width: 900px){
+      /* Mobile nav: make subNav a 2x2 grid instead of 1x4 */
+  .subNav{
+    width: 80vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas:
+      "subNavItem1 subNavItem2"
+      "subNavItem3 subNavItem4";
+    row-gap: 0.75rem;
+    column-gap: 0.75rem;
+  }
+
     [class^="projectCard"]{
         grid-template-columns: 1fr;
     }
