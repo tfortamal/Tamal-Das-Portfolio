@@ -257,10 +257,10 @@ section{
     justify-self: start;
     line-height: 0.95;
     letter-spacing: -0.02em;
-    font-weight: 400;
+    font-weight: 900;
     /* font-size: 4.5rem; */
     font-size: clamp(4.5rem, 10vw, 10rem);
-    font-family: "inter";
+    font-family: "Inter";
     color: var(--backGrountCol);
     display: inline-block;
     max-width: 8ch;
@@ -681,7 +681,7 @@ section{
 
   /* Scroll hint: tighten spacing */
   .landingCenterHint{
-    transform: translateY(20vh);
+    transform: translateY(10vh);
     margin: 3vh 1rem;
     font-size: 1.1rem;
   }
