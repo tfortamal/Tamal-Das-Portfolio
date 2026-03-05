@@ -69,6 +69,170 @@
   }
 })();
 
+// ----------------------------
+// Skills + Work Experience titles (scroll reveal)
+// ----------------------------
+(function () {
+  if (typeof gsap === "undefined") return;
+
+  // Register ScrollTrigger if present
+  if (typeof ScrollTrigger !== "undefined" && gsap && gsap.registerPlugin) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  if (typeof ScrollTrigger === "undefined") return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) return;
+
+  const skillsTitle = document.querySelector(".skillsAndExpertiseTitle p");
+  const expTitle = document.querySelector(".workExperienceTitle p");
+  const workTitle = document.querySelector(".workTitleContainer");
+
+  // Use the section as a shared trigger so both headings animate nicely when the section enters.
+  const triggerEl = document.querySelector(".skillsSection") || skillsTitle || expTitle;
+
+  function splitReveal(el, label) {
+    if (!el) return;
+
+    if (typeof SplitText !== "undefined") {
+      document.fonts.ready.then(() => {
+        const split = new SplitText(el, { type: "words" });
+        gsap.from(split.words, {
+          yPercent: 120,
+          opacity: 0,
+          stagger: 0.06,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%",
+            end: "top 50%",
+            markers: false,
+            toggleActions: "play none none reverse"
+          }
+        });
+      });
+    } else {
+      gsap.from(el, {
+        y: 28,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
+          markers: false,
+          toggleActions: "play none none reverse"
+        }
+      });
+    }
+
+    // Subtle parallax drift while scrolling through the skills section
+    gsap.to(el, {
+      yPercent: -8,
+      ease: "none",
+      scrollTrigger: {
+        trigger: triggerEl,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+        markers: false
+      }
+    });
+  }
+
+  splitReveal(skillsTitle, "skillsTitle");
+  splitReveal(expTitle, "expTitle");
+  splitReveal(workTitle, "workTitle");
+})();
+
+// ----------------------------
+// Project cards (scroll reveal)
+// ----------------------------
+(function () {
+  if (typeof gsap === "undefined") return;
+
+  if (typeof ScrollTrigger !== "undefined" && gsap && gsap.registerPlugin) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+  if (typeof ScrollTrigger === "undefined") return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) return;
+
+  // Select all project cards (projectCard1, projectCard2, ...)
+  const cards = gsap.utils.toArray('[class^="projectCard"]');
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    // Card container reveal
+    gsap.from(card, {
+      y: 28,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: card,
+        start: "top 85%",
+        end: "top 55%",
+        markers: false,
+        toggleActions: "play none none reverse"
+      }
+    });
+
+    // Headline word-by-word reveal (if SplitText available)
+    const headline = card.querySelector(".projectHeadline");
+    if (!headline) return;
+
+    if (typeof SplitText !== "undefined") {
+      document.fonts.ready.then(() => {
+        const split = new SplitText(headline, { type: "words" });
+        gsap.from(split.words, {
+          yPercent: 120,
+          opacity: 0,
+          stagger: 0.05,
+          duration: 0.75,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 82%",
+            end: "top 55%",
+            markers: false,
+            toggleActions: "play none none reverse"
+          }
+        });
+      });
+    } else {
+      gsap.from(headline, {
+        y: 16,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 82%",
+          markers: false,
+          toggleActions: "play none none reverse"
+        }
+      });
+    }
+
+    // Optional: subtle parallax drift for the entire card
+    gsap.to(card, {
+      yPercent: -3,
+      ease: "none",
+      scrollTrigger: {
+        trigger: card,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+        markers: false
+      }
+    });
+  });
+})();
+
 let isSlidLeft = false;
 
 // Toggle the navOverlay when ballButton is clicked
@@ -287,7 +451,7 @@ document.fonts.ready.then(() => {
           stagger: 0.1,
           scrollTrigger: {
             trigger: container,
-            markers: true,
+            markers: false,
             scrub: true,
             start: "clamp(top center)",
             end: "clamp(bottom center)"
