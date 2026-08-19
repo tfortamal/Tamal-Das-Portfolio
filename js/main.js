@@ -12,224 +12,226 @@
   }
 })();
 
-// ----------------------------
-// Landing headline animation
-// ----------------------------
-// Uses SplitText if available; falls back to a simple fade-up.
-// Also adds a subtle parallax on scroll.
-(function () {
-  const headline = document.querySelector(".landingHeadline");
-  if (!headline || typeof gsap === "undefined") return;
-
-  // Register ScrollTrigger if present
-  if (typeof ScrollTrigger !== "undefined" && gsap && gsap.registerPlugin) {
-    gsap.registerPlugin(ScrollTrigger);
-  }
-
-  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // Initial reveal (on load)
-  if (!prefersReduced) {
-    if (typeof SplitText !== "undefined") {
-      // Word-by-word build
-      document.fonts.ready.then(() => {
-        const split = new SplitText(headline, { type: "words" });
-        gsap.from(split.words, {
-          yPercent: 120,
-          opacity: 0,
-          stagger: 0.06,
-          duration: 1.05,
-          ease: "power3.out",
-          clearProps: "transform"
-        });
-      });
-    } else {
-      // Fallback: simple fade-up
-      gsap.from(headline, {
-        y: 36,
-        opacity: 0,
-        duration: 1.0,
-        ease: "power3.out"
-      });
-    }
-  }
-
-  // Parallax on scroll (very subtle)
-  if (!prefersReduced && typeof ScrollTrigger !== "undefined") {
-    gsap.to(headline, {
-      yPercent: -12,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".landingSection",
-        start: "top top",
-        end: "bottom top",
-        scrub: true
-      }
-    });
-  }
-})();
-
-// ----------------------------
-// Skills + Work Experience titles (scroll reveal)
-// ----------------------------
+// ============================================================
+// Motion system — GSAP + ScrollTrigger
+// Each section gets a treatment suited to its role rather than
+// one blanket effect: sequenced timelines where elements relate
+// to each other (hero, work heading, contact), staggered list
+// reveals for repeated items (skills, education, experience,
+// project cards), and a touch of parallax depth in the hero.
+// Pattern reference: SKILL.md (gsap-scrolltrigger).
+// ============================================================
 (function () {
   if (typeof gsap === "undefined") return;
-
-  // Register ScrollTrigger if present
-  if (typeof ScrollTrigger !== "undefined" && gsap && gsap.registerPlugin) {
+  if (typeof ScrollTrigger !== "undefined" && gsap.registerPlugin) {
     gsap.registerPlugin(ScrollTrigger);
   }
-
-  if (typeof ScrollTrigger === "undefined") return;
 
   const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (prefersReduced) return;
 
-  const skillsTitle = document.querySelector(".skillsAndExpertiseTitle p");
-  const expTitle = document.querySelector(".workExperienceTitle p");
-  const workTitle = document.querySelector(".workTitleContainer");
+  // Project images + hero video finish loading after ScrollTrigger's first
+  // measurement pass, which shifts page height and can throw off trigger
+  // positions further down the page (the contact section especially, being
+  // last). Re-measure once everything has actually loaded.
+  if (typeof ScrollTrigger !== "undefined") {
+    window.addEventListener("load", () => ScrollTrigger.refresh());
+  }
 
-  // Use the section as a shared trigger so both headings animate nicely when the section enters.
-  const triggerEl = document.querySelector(".skillsSection") || skillsTitle || expTitle;
+  // ---- Hero: headline leads, hint follows; gentle scroll parallax ----
+  gsap.timeline({ defaults: { ease: "power2.out" } })
+    .from(".landingHeadline", { y: 18, opacity: 0, duration: 1.1 })
+    .from(".landingCenterHint", { y: 18, opacity: 0, duration: 1.1 }, "-=0.5");
 
-  function splitReveal(el, label) {
-    if (!el) return;
+  if (typeof ScrollTrigger !== "undefined") {
+    // Headline drifts slightly slower than the scroll.
+    gsap.to(".landingHeadline", {
+      yPercent: -10,
+      ease: "none",
+      scrollTrigger: { trigger: ".landingSection", start: "top top", end: "bottom top", scrub: true }
+    });
+  }
 
-    if (typeof SplitText !== "undefined") {
-      document.fonts.ready.then(() => {
-        const split = new SplitText(el, { type: "words" });
-        gsap.from(split.words, {
-          yPercent: 120,
-          opacity: 0,
-          stagger: 0.06,
-          duration: 0.9,
-          ease: "power3.out",
+  if (typeof ScrollTrigger === "undefined") return;
+
+  // ---- Work: heading + subtitle sequenced, cards reveal individually ----
+  gsap.timeline({
+    scrollTrigger: { trigger: ".workTitleContainer", start: "top 85%", toggleActions: "play none none reverse" }
+  })
+    .from(".workSectionTitle", { y: 22, opacity: 0, duration: 0.7, ease: "power2.out" })
+    .from(".workSectionSubtitle", { y: 14, opacity: 0, duration: 0.55, ease: "power2.out" }, "-=0.35");
+
+  // Desktop-with-motion: pin the work section and scrub the project track
+  // sideways so cards pass one at a time; everyone else (mobile, or
+  // prefers-reduced-motion on any screen size) gets the plain vertical
+  // list from the base CSS, with each card revealing as it scrolls into
+  // view. The query here must match the CSS media query in style.css
+  // exactly, since that's what switches the layout these rely on.
+  let workMM = gsap.matchMedia();
+  workMM.add(
+    { isGallery: "(min-width: 901px) and (prefers-reduced-motion: no-preference)" },
+    (context) => {
+      const track = document.querySelector(".projectShowcase");
+      const cards = gsap.utils.toArray('[class^="projectCard"]');
+      if (!track || !cards.length) return;
+
+      if (context.conditions.isGallery) {
+        // Scroll the track its full scrollWidth (not scrollWidth minus
+        // viewport width) so the last card actually exits past the left
+        // edge before the section unpins, rather than stopping the moment
+        // it's merely fully visible. Combined with the large left padding
+        // on .projectShowcase (cards start off-screen right), this gives a
+        // full off-right-in, off-left-out journey with room to scroll.
+        const getDistance = () => track.scrollWidth;
+
+        const galleryTween = gsap.to(track, {
+          x: () => -getDistance(),
+          ease: "none",
           scrollTrigger: {
-            trigger: el,
-            start: "top 80%",
-            end: "top 50%",
-            markers: false,
-            toggleActions: "play none none reverse"
+            trigger: ".workSection",
+            start: "top top",
+            end: () => "+=" + getDistance(),
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
           }
         });
-      });
-    } else {
-      gsap.from(el, {
-        y: 28,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 80%",
-          markers: false,
-          toggleActions: "play none none reverse"
-        }
-      });
-    }
 
-    // Subtle parallax drift while scrolling through the skills section
-    gsap.to(el, {
-      yPercent: -8,
-      ease: "none",
-      scrollTrigger: {
-        trigger: triggerEl,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-        markers: false
+        // The title starts big and centered — filling what would
+        // otherwise be an empty-looking section before any card has
+        // scrolled into view — then eases back down to its normal size
+        // and position over the first ~22% of the gallery scroll, timed
+        // to settle right around when the first card arrives. Scrubbed
+        // off the same trigger/distance as the horizontal scroll above,
+        // not a separate independent animation.
+        const titleIntro = gsap.from(".workTitleContainer", {
+          scale: 1.5,
+          y: "24vh",
+          transformOrigin: "center center",
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".workSection",
+            start: "top top",
+            end: () => "+=" + getDistance() * 0.22,
+            scrub: 1
+          }
+        });
+
+        // Each card fades in as it slides into view from the right and
+        // fades out as it exits to the left — driven by the same scroll
+        // progress as the horizontal scrub above.
+        const fades = cards.map((card) =>
+          gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              containerAnimation: galleryTween,
+              start: "left 95%",
+              end: "right 5%",
+              scrub: true
+            }
+          })
+            .fromTo(card, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out" })
+            .to(card, { opacity: 1, duration: 0.4 })
+            .to(card, { opacity: 0, duration: 0.3, ease: "power1.in" })
+        );
+
+        return () => {
+          galleryTween.kill();
+          titleIntro.kill();
+          fades.forEach((tl) => tl.kill());
+        };
       }
-    });
-  }
 
-  splitReveal(skillsTitle, "skillsTitle");
-  splitReveal(expTitle, "expTitle");
-  splitReveal(workTitle, "workTitle");
-})();
+      // Stacked list: fade each card in as it enters the viewport and back
+      // out as it leaves — in either scroll direction, not just on reverse.
+      const fades = cards.map((card) =>
+        gsap.timeline({
+          scrollTrigger: { trigger: card, start: "top 95%", end: "bottom 5%", scrub: true }
+        })
+          .fromTo(card, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.3, ease: "power1.out" })
+          .to(card, { opacity: 1, y: 0, duration: 0.4 })
+          .to(card, { opacity: 0, y: -26, duration: 0.3, ease: "power1.in" })
+      );
+      return () => fades.forEach((tl) => tl.kill());
+    }
+  );
 
-// ----------------------------
-// Project cards (scroll reveal)
-// ----------------------------
-(function () {
-  if (typeof gsap === "undefined") return;
+  // Skills/Education/Experience section is a flat black background (see
+  // style.css) — no scroll-scrubbed color transition into it anymore; the
+  // FAFAFA-to-black interpolation passed through a visible gray midpoint
+  // that didn't look good, so it's just a hard cut now.
 
-  if (typeof ScrollTrigger !== "undefined" && gsap && gsap.registerPlugin) {
-    gsap.registerPlugin(ScrollTrigger);
-  }
-  if (typeof ScrollTrigger === "undefined") return;
-
-  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (prefersReduced) return;
-
-  // Select all project cards (projectCard1, projectCard2, ...)
-  const cards = gsap.utils.toArray('[class^="projectCard"]');
-  if (!cards.length) return;
-
-  cards.forEach((card) => {
-    // Card container reveal
-    gsap.from(card, {
-      y: 28,
+  // ---- Skills / Education / Experience: heading then its own list ----
+  function revealHeading(sel) {
+    gsap.from(sel, {
+      y: 20,
       opacity: 0,
-      duration: 0.8,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: card,
-        start: "top 85%",
-        end: "top 55%",
-        markers: false,
-        toggleActions: "play none none reverse"
-      }
+      duration: 0.7,
+      ease: "power2.out",
+      scrollTrigger: { trigger: sel, start: "top 85%", toggleActions: "play none none reverse" }
     });
-
-    // Headline word-by-word reveal (if SplitText available)
-    const headline = card.querySelector(".projectHeadline");
-    if (!headline) return;
-
-    if (typeof SplitText !== "undefined") {
-      document.fonts.ready.then(() => {
-        const split = new SplitText(headline, { type: "words" });
-        gsap.from(split.words, {
-          yPercent: 120,
-          opacity: 0,
-          stagger: 0.05,
-          duration: 0.75,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 82%",
-            end: "top 55%",
-            markers: false,
-            toggleActions: "play none none reverse"
-          }
-        });
-      });
-    } else {
-      gsap.from(headline, {
-        y: 16,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 82%",
-          markers: false,
-          toggleActions: "play none none reverse"
-        }
-      });
-    }
-
-    // Optional: subtle parallax drift for the entire card
-    gsap.to(card, {
-      yPercent: -3,
-      ease: "none",
-      scrollTrigger: {
-        trigger: card,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-        markers: false
-      }
+  }
+  function revealList(containerSel, itemSel) {
+    const container = document.querySelector(containerSel);
+    if (!container) return;
+    gsap.from(gsap.utils.toArray(itemSel), {
+      y: 16,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.05,
+      scrollTrigger: { trigger: container, start: "top 85%", toggleActions: "play none none reverse" }
     });
+  }
+
+  revealHeading(".skillsAndExpertiseTitle p");
+  revealList(".skills", ".skill");
+
+  revealHeading(".educationTitle p");
+  revealList(".educations", ".education");
+
+  revealHeading(".workExperienceTitle p");
+  revealList(".experiences", ".experience");
+
+  // Contact section (title, "Hire Me now" button, contact info row) is left
+  // unanimated on purpose — it's the last section on the page, and a
+  // scroll-triggered reveal there risked getting stuck invisible if
+  // ScrollTrigger's position measurement went stale after images loaded.
+})();
+
+// ============================================================
+// UI Interactions — hover polish
+// Pointer-driven, not scroll-driven. gsap.quickTo() reuses a single
+// tween per property instead of creating a new one on every mousemove
+// (gsap-performance: "frequently updated properties").
+// Skipped on touch devices (no real hover) and prefers-reduced-motion.
+//
+// Magnetic-pull on the buttons and the project card tilt/zoom were both
+// tried and scrapped per feedback — revisit button/card interaction
+// separately later.
+// ============================================================
+(function () {
+  if (typeof gsap === "undefined") return;
+
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hasFineHover = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (prefersReduced || !hasFineHover) return;
+
+  // ---- "View project" links: arrow launches forward + up with a playful
+  // overshoot, text lifts slightly alongside it. A paused timeline played
+  // forward/reversed on hover, rather than separate tweens per property,
+  // so both pieces stay perfectly in sync going in either direction.
+  gsap.utils.toArray(".projectLink").forEach((link) => {
+    const icon = link.querySelector(".projectLinkIcon");
+    const tl = gsap.timeline({ paused: true, defaults: { duration: 0.45, ease: "back.out(1.7)" } });
+
+    tl.to(link, { scale: 1.04 }, 0);
+    if (icon) tl.to(icon, { x: 6, y: -3, rotation: 16, scale: 1.2 }, 0);
+
+    link.style.transformOrigin = "left center";
+    link.addEventListener("mouseenter", () => tl.play());
+    link.addEventListener("mouseleave", () => tl.reverse());
   });
 })();
 
@@ -289,6 +291,8 @@ document.querySelectorAll('.menuItem a').forEach(link => {
 // Hover effect for ballButton
 const ballButton = document.getElementById('ballButton');
 
+// Note: x/y are intentionally left out here — the magnetic-pull interaction
+// (see "UI Interactions" above) owns those on this element.
 ballButton.addEventListener('mouseenter', () => {
     gsap.to(ballButton, {
         backgroundColor: "var(--font)",
@@ -296,7 +300,6 @@ ballButton.addEventListener('mouseenter', () => {
         border: "4px solid var(--highlightCol)",
         width: 28,
         height: 28,
-        x: 1,
         duration: 0.2,
         ease: "power1.inOut"
     });
@@ -308,7 +311,6 @@ ballButton.addEventListener('mouseleave', () => {
         border: isSlidLeft ? "2px solid var(--highlightCol)" : "2px solid var(--font)",
         width: 20,
         height: 20,
-        x: 0,
         duration: 0.2,
         ease: "power1.inOut"
     });
@@ -471,6 +473,8 @@ document.fonts.ready.then(() => {
 // Hover effect for hireButton
 const hireButton = document.getElementById('hireButton');
 
+// Note: x/y are intentionally left out here — the magnetic-pull interaction
+// (see "UI Interactions" above) owns those on this element.
 hireButton.addEventListener('mouseenter', () => {
     gsap.to(hireButton, {
         backgroundColor: "var(--font)",
@@ -479,7 +483,6 @@ hireButton.addEventListener('mouseenter', () => {
         border: "4px solid var(--font)",
         width: '15vw',
         height: '15vw',
-        x: 1,
         duration: 0.2,
         ease: "power1.inOut"
     });
@@ -492,7 +495,6 @@ hireButton.addEventListener('mouseleave', () => {
         border: isSlidLeft ? "2px var(--font) solid" : "2px var(--font) solid",
         width: '15vw',
         height: '15vw',
-        x: 0,
         duration: 0.2,
         ease: "power1.inOut"
     });
