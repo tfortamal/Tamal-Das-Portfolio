@@ -2,7 +2,22 @@
 :root {
     --highlightCol: #ff5900;
     --font: #191919;
-    --backGrountCol: #fcfaf9;
+    --backGrountCol: #FAFAFA;
+
+    --inkSecondary: #6e6e73;
+    --inkSubdued: #86868b;
+    --panelCol: #E8F1F5;       /* pale rounded panel surface */
+    --hairline: rgba(25, 25, 25, 0.14);
+
+    /* Graph-paper grid background, 88px pitch. Line color is set directly
+       (not via CSS opacity) so the pattern is actually visible without
+       fading the page content that sits on top of these backgrounds. */
+    --gridPattern: repeating-linear-gradient(0deg, transparent, transparent 43px, #f2f2f2 43px, #f2f2f2 44px, transparent 44px, transparent 87px, #f2f2f2 87px, #f2f2f2 88px), repeating-linear-gradient(90deg, transparent, transparent 43px, #f2f2f2 43px, #f2f2f2 44px, transparent 44px, transparent 87px, #f2f2f2 87px, #f2f2f2 88px), radial-gradient(circle at 44px 44px, #f2f2f2 3.52px, transparent 4.02px), radial-gradient(circle at 0px 0px, #f2f2f2 2.64px, transparent 3.14px), radial-gradient(circle at 88px 0px, #f2f2f2 2.64px, transparent 3.14px), radial-gradient(circle at 0px 88px, #f2f2f2 2.64px, transparent 3.14px), radial-gradient(circle at 88px 88px, #f2f2f2 2.64px, transparent 3.14px);
+    --gridSize: 88px 88px;
+
+    --radius-control: 0.75rem;  /* 12px */
+    --radius-panel: 1.125rem;   /* 18px */
+    --radius-round: 2.25rem;    /* 36px */
 
     /* cursor grid */
     --cursor-cell: 3rem;
@@ -36,8 +51,8 @@
 html, body{
     min-height: 100%;
     width: 100%;
-    font-family: "Dream";
-    background-color: transparent;
+    font-family: "inter";
+    background-color: var(--backGrountCol);
     color: var(--font);
     overflow-x: hidden;
 }
@@ -145,7 +160,8 @@ section{
     will-change: transform;
     transition: letter-spacing 0.31;
     transition: all 0.2s ease-out;
-    font-family: "Dream";
+    font-family: "inter";
+    font-weight: 600;
 }
 .menuItem a{
     color: var(--font);
@@ -154,6 +170,13 @@ section{
 .menuItem p:hover{
     letter-spacing: .067em;
     transition: all 0.2s ease-out;
+}
+
+/* Nav menu: 12vw reads huge on wide viewports — scale it down on desktop only */
+@media (min-width: 901px){
+    .menuItem p{
+        font-size: clamp(3rem, 6vw, 6rem);
+    }
 }
 .subNav{
     grid-area: subNav;
@@ -174,7 +197,7 @@ section{
 .subNavItem3{ text-align: center; grid-area: subNavItem3; }
 .subNavItem4{ text-align: center; grid-area: subNavItem4; }
 .subNav p{
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "inter";
     font-size: 1.25rem;
 }
 .subNav a{
@@ -204,24 +227,9 @@ section{
     min-height: 100vh;
     height: 100vh;
     position: relative;
-    background: transparent;
-}
-
-.landingVideo{
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: none;
-    background: #000;
-}
-#heroVideo{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    background-color: transparent;
+    background-image: var(--gridPattern);
+    background-size: var(--gridSize);
 }
 
 
@@ -256,27 +264,27 @@ section{
     align-self: start;
     justify-self: start;
     line-height: 0.95;
-    letter-spacing: -0.02em;
-    font-weight: 900;
+    letter-spacing: -0.01em;
+    font-weight: 600;
     /* font-size: 4.5rem; */
     font-size: clamp(4.5rem, 10vw, 10rem);
-    font-family: "Inter";
-    color: var(--backGrountCol);
+    font-family: "inter";
+    color: var(--font);
     display: inline-block;
     max-width: 8ch;
     white-space: normal;
 }
 .landingCenterHint{
     grid-area: LandingCenterHint;
-    width: 100%;
+    width: fit-content;
     max-width: 40rem;
-    padding-left: 2vh;
+    justify-self: center;
     font-family: "inter";
     font-size: 1.5625rem;
     font-weight: 300;
     opacity: 0.95;
     user-select: none;
-    color: var(--backGrountCol);
+    color: var(--font);
     height: 30vh;
     margin: 5vh;
 }
@@ -297,6 +305,8 @@ section{
     width: 100%;
     min-height: 100vh;
     background-color: var(--backGrountCol);
+    background-image: var(--gridPattern);
+    background-size: var(--gridSize);
     color: var(--font);
 }
 
@@ -311,9 +321,9 @@ section{
 }
 
 .workSectionTitle{
-    font-family: "Dream", Helvetica, Arial, sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-family: "inter", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     line-height: 0.95;
     margin: 0;
     font-size: 3.25rem;
@@ -326,45 +336,57 @@ section{
     font-weight: 400;
     font-size: 1.35rem;
     line-height: 1.2;
-    opacity: 0.85;
+    color: var(--inkSecondary);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
 }
 
-/* thunder icon beside subtitle (match scroll icon size) */
-.moji{
-    width: 2rem;
-    height: 2rem;
-    vertical-align: middle;
-    display: inline-block;
-}
-
 /* ===== Works: Project cards ===== */
+/* Base/default: a plain vertical list — this is what mobile and
+   prefers-reduced-motion users get. The desktop horizontal-scroll
+   gallery below is a progressive enhancement on top of this, so every
+   project stays reachable even without JS or with reduced motion. */
 .projectShowcase{
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 2.5rem;
     padding: 0 6vw 8vh 6vw;
 }
 
+/* The photo itself is the card surface — image fills the whole card,
+   the info panel overlays its bottom, and a masked blur+darken layer
+   blends the two: clear photo up top, frosted glass with white text
+   toward the bottom. */
 [class^="projectCard"]{
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    border: 0.0625rem solid rgba(25, 25, 25, 0.18);
-    background-color: var(--backGrountCol);
+    aspect-ratio: 3 / 4;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--radius-panel);
     overflow: hidden;
+    will-change: transform;
+}
+
+/* Thin light-catching edge along the top of the card. */
+[class^="projectCard"]::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+    pointer-events: none;
+    z-index: 3;
 }
 
 .projectMedia{
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    background-color: rgba(25, 25, 25, 0.06);
+    position: absolute;
+    inset: 0;
+    z-index: 0;
 }
 
 .projectImage{
@@ -372,14 +394,38 @@ section{
     height: 100%;
     object-fit: cover;
     display: block;
+    filter: grayscale(100%) contrast(1.05);
+}
+
+/* Masked frost: fully blurred + darkened at the bottom (behind the text),
+   fading to no effect just past the card's midpoint so more of the photo
+   reads clearly up top. */
+.projectMedia::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    background: linear-gradient(to top,
+        rgba(10, 10, 10, 0.9) 0%,
+        rgba(10, 10, 10, 0.65) 18%,
+        rgba(10, 10, 10, 0.25) 35%,
+        transparent 55%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, black 28%, transparent 55%);
+    mask-image: linear-gradient(to top, black 0%, black 28%, transparent 55%);
 }
 
 .projectInfo{
-    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
     display: grid;
     grid-template-rows: auto 1fr;
-    padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+    padding: 1.75rem 1.5rem 1.5rem 1.5rem;
     gap: 1.25rem;
+    color: #ffffff;
 }
 
 .projectTitle{
@@ -387,13 +433,14 @@ section{
 }
 
 .projectHeadline{
-    font-family: "Dream";
-    font-weight: 400;
-    letter-spacing: -0.02em;
+    font-family: "inter";
+    font-weight: 600;
+    letter-spacing: -0.01em;
     line-height: 1.02;
     margin: 0;
+    color: #ffffff;
     font-size: 2.25rem;
-    font-size: clamp(2rem, 2.6vw, 3rem);
+    font-size: clamp(1.75rem, 2.2vw, 2.5rem);
 }
 
 .projectBottom{
@@ -402,7 +449,7 @@ section{
     gap: 1.25rem;
     align-items: end;
     padding-top: 1.25rem;
-    border-top: 0.0625rem solid rgba(25, 25, 25, 0.25);
+    border-top: 0.0625rem solid rgba(255, 255, 255, 0.25);
 }
 
 .projectMeta{
@@ -411,11 +458,15 @@ section{
 }
 
 .metaLabel {
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "inter";
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .metaValue {
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "inter";
+    font-weight: 600;
+    color: #ffffff;
 }
 
 .projectView{
@@ -424,20 +475,20 @@ section{
 }
 
 .projectLink{
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "inter";
     font-size: 1rem;
-    font-weight: 400;
-    color: var(--font);
+    font-weight: 600;
+    color: var(--highlightCol);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    border-bottom: 0.0625rem solid rgba(25, 25, 25, 0.35);
+    border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.5);
     padding-bottom: 0.25rem;
 }
 
 .projectLink:hover{
-    border-bottom-color: var(--highlightCol)
+    border-bottom-color: var(--highlightCol);
 }
 
 .projectLinkIcon{
@@ -456,34 +507,35 @@ section{
     gap: 0.5rem;
 
     padding: 0.9rem 1.15rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-control);
 
-    background: rgba(252, 250, 249, 0.92);
+    background: rgba(255, 255, 255, 0.92);
     color: var(--font);
-    border: 0.0625rem solid rgba(25, 25, 25, 0.22);
+    border: 0.0625rem solid var(--hairline);
 
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "inter";
     font-size: 0.95rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
     text-decoration: none;
 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 
+    will-change: transform;
     transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 .btn:hover{
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     background: var(--highlightCol);
     color: var(--backGrountCol);
     border-color: rgba(255, 89, 0, 0.55);
-    box-shadow: 0 14px 30px rgba(25, 25, 25, 0.22);
+    box-shadow: 0 8px 20px rgba(29, 29, 29, 0.15);
 }
 
 .btn:active{
-    transform: translateY(-2px) scale(0.98);
+    transform: translateY(-1px) scale(0.98);
 }
 
 .btn:focus-visible{
@@ -507,14 +559,6 @@ section{
     column-gap: 0.75rem;
   }
 
-    [class^="projectCard"]{
-        grid-template-columns: 1fr;
-    }
-
-    .projectMedia{
-        aspect-ratio: 4 / 3;
-    }
-
     .projectInfo{
         padding: 1.25rem;
         gap: 1.1rem;
@@ -530,14 +574,66 @@ section{
     }
 }
 
+/* Horizontal-scroll gallery — the work section pins full-height and
+   continued page scroll drives the project track sideways, one card at a
+   time, until the last card clears, then normal vertical scroll into the
+   next section resumes. Pin/scrub/zigzag logic lives in main.js and is
+   gated behind gsap.matchMedia() with this exact same query, so the two
+   always flip together. Desktop-only — phones keep the plain vertical
+   list above (simpler and safer on touch), and prefers-reduced-motion is
+   skipped at any width for the same reason. */
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference){
+    .workSection{
+        height: 100vh;
+        height: 100dvh; /* accounts for mobile browser chrome (address bar) */
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .workTitleContainer{
+        min-height: 0;
+        flex: 0 0 auto;
+        padding: 4vh 6vw 2vh 6vw;
+    }
+
+    .projectShowcase{
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        gap: 2rem;
+        /* Large left offset: the track starts with nothing visible yet,
+           so the first card scrolls in from off-screen right rather than
+           already sitting partway into view. */
+        padding: 0 6vw 2vh 100vw;
+    }
+
+    [class^="projectCard"]{
+        flex: 0 0 auto;
+        width: min(32vw, 26rem);
+    }
+
+    /* Zigzag/bento rhythm: odd cards sit top, even cards sit bottom, so
+       each pair reads as a 2x2 cell with a card diagonally in the
+       top-left and bottom-right, repeating across the row. */
+    [class^="projectCard"]:nth-child(even){
+        align-self: flex-end;
+    }
+}
+
 /* ==========================
    SKILLS / EXPERIENCE SECTION
    ========================== */
 .skillsSection{
     width: 100%;
     min-height: 100vh;
-    background-color: var(--backGrountCol);
-    color: var(--font);
+    /* Resting/end state is black — the fade in from the light background
+       above is a scroll-scrubbed GSAP tween (see main.js) so the change
+       happens gradually as you scroll in, not as a hard cut. */
+    background-color: #000000;
+    color: #ffffff;
     display: flex;
     align-items: center;
 }
@@ -551,22 +647,25 @@ section{
 }
 
 .skillsAndExpertiseTitle p,
-.workExperienceTitle p{
-    font-family: "Dream";
-    font-weight: 400;
-    letter-spacing: -0.02em;
+.workExperienceTitle p,
+.educationTitle p{
+    font-family: "inter";
+    font-weight: 600;
+    letter-spacing: -0.01em;
     line-height: 0.95;
     font-size: clamp(2.5rem, 6vw, 4.25rem);
 }
 
 .skills,
-.experiences{
+.experiences,
+.educations{
     width: 100%;
 }
 
 .skill p,
-.experience p{
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+.experience p,
+.education p{
+    font-family: "inter";
     font-size: 1.05rem;
     line-height: 1.35;
 }
@@ -574,14 +673,16 @@ section{
 /* Skills list dividers */
 #skillHR,
 .experiences hr,
+.educations hr,
 .hrSkill hr,
 .experienceHr hr{
     border: none;
-    border-top: 0.0625rem solid rgba(25, 25, 25, 0.25);
+    border-top: 0.0625rem solid rgba(255, 255, 255, 0.2);
     margin: 0.85rem 0;
 }
 
-.experience{
+.experience,
+.education{
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
@@ -593,7 +694,7 @@ section{
 
 .contactSection{
     overflow: hidden;
-    background-color:var(--backGrountCol);
+    background-color: var(--backGrountCol);
     color:  var(--font);
     height: 100vh;
     width: 100vw;
@@ -621,6 +722,7 @@ section{
     top: 35vh;
     left: 42vw;
     text-transform: uppercase;
+    font-family: "Dream";
     font-size: 1vw;
     font-weight: 700;
     transition: all 250ms ease-out;
@@ -637,12 +739,12 @@ section{
     top: 85vh;
     padding: 1vh;
     font-weight: 200;
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "inter";
 }
 .info a{
     color: var(--font);
     text-decoration: none;
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: "inter";
 }
 
 
@@ -650,28 +752,43 @@ section{
    WORK EXPERIENCE SECTION
    ========================== */
 
-.workExperienceTitle{
+.workExperienceTitle,
+.educationTitle{
     margin-top: 2rem;
 }
 
-.experiences{
+.educationTitle{
+    padding-top: 1rem;
+}
+
+.experiences,
+.educations{
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.75rem;
 }
 
-.experience{
+.experience,
+.education{
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 1.5rem;
 }
 
-.experience p:last-child{
-    opacity: 0.7;
+.experience p:last-child,
+.education p:last-child{
+    color: rgba(255, 255, 255, 0.6);
 }
 
 @media (max-width: 450px){
+  /* Nav bar: clear the notch/Dynamic Island on iPhone XR/12 Pro/etc.
+     env(safe-area-inset-top) is 0 on phones without a notch (e.g. SE), so
+     this still nudges the bar down a bit there via the fixed minimum. */
+  .pageNav{
+    top: max(0.75rem, env(safe-area-inset-top, 0px));
+  }
+
   /* Landing headline: prevent it from feeling too huge */
   .landingHeadline{
     transform: translateY(10vh);
@@ -681,7 +798,7 @@ section{
 
   /* Scroll hint: tighten spacing */
   .landingCenterHint{
-    transform: translateY(10vh);
+    transform: translateY(20vh);
     margin: 3vh 1rem;
     font-size: 1.1rem;
   }
@@ -701,6 +818,7 @@ section{
 
   .projectInfo{
     padding: 1rem;
+    gap: 1rem;
   }
 
   .projectHeadline{
@@ -714,7 +832,7 @@ section{
     }
     .hireButton{
         background-color: var(--highlightCol);
-        color: var(--font);
+        color: var(--backGrountCol);
         border: 2px var(--font) solid;
         width: 20vw;
         height: 20vw;
@@ -724,6 +842,7 @@ section{
         top: 45vh;
         left: 42vw;
         text-transform: uppercase;
+        font-family: "Dream";
         font-size: 1vw;
         font-weight: 700;
     }
