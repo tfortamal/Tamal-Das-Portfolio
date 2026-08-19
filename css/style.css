@@ -30,10 +30,6 @@
     src: url("../assets/fonts/Anton-Regular.ttf");
 }
 @font-face {
-    font-family: "instrument";
-    src: url("../assets/fonts/instrument.ttf");
-}
-@font-face {
     font-family: "Dream";
     src: url("../assets/fonts/Dream.ttf");
 }
@@ -122,6 +118,7 @@ section{
 .navOverlay{
     width: 100vw;
     height: 100vh;
+    height: 100dvh; /* iOS Safari: 100vh overshoots when the address bar is showing */
     background-color: var(--backGrountCol);
     color: var(--font);
     position: fixed;
@@ -226,6 +223,7 @@ section{
     width: 100%;
     min-height: 100vh;
     height: 100vh;
+    height: 100dvh; /* iOS Safari: 100vh overshoots when the address bar is showing */
     position: relative;
     background-color: transparent;
     background-image: var(--gridPattern);
@@ -236,7 +234,6 @@ section{
 .landingContent{
     position: relative;
     z-index: 2;
-    height: 100vh;
     width: 100vw;
     display: grid;
     grid-template-columns: 1fr;           /* One column */
@@ -248,6 +245,7 @@ section{
         "LandingCenterHint"
         "LandingCenterHint";
     height: 100vh;
+    height: 100dvh; /* iOS Safari: 100vh overshoots when the address bar is showing */
 }
 
 .landingHeadlineContainer{
@@ -697,6 +695,7 @@ section{
     background-color: var(--backGrountCol);
     color:  var(--font);
     height: 100vh;
+    height: 100dvh; /* iOS Safari: 100vh overshoots when the address bar is showing — critical here since hireButton/contactInfos below are positioned at fixed vh offsets inside this overflow:hidden box */
     width: 100vw;
     position: relative;
     display: flex;
@@ -791,14 +790,29 @@ section{
 
   /* Landing headline: prevent it from feeling too huge */
   .landingHeadline{
-    transform: translateY(10vh);
-    font-size: clamp(5rem, 14vw, 5.25rem);
+    transform: translateY(7vh);
+    font-size: clamp(3.25rem, 10vw, 3.75rem);
     margin-left: 1rem;
+  }
+
+  /* Download CV button: sit a bit lower and a bit smaller */
+  .btn{
+    bottom: 1.25rem;
+    right: 1.25rem;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  /* Nav toggle circle: a bit bigger, easier to tap, nudged left + down */
+  .ballButton{
+    width: 1.6rem;
+    height: 1.6rem;
+    transform: translate(4px, -14px);
   }
 
   /* Scroll hint: tighten spacing */
   .landingCenterHint{
-    transform: translateY(20vh);
+    transform: translateY(17vh);
     margin: 3vh 1rem;
     font-size: 1.1rem;
   }
