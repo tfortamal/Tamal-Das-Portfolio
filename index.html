@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Tamal's Portfolio</title>
     <link rel="stylesheet" href="css/style.css">
     <meta name="theme-color" content="#000000">
@@ -26,15 +26,18 @@
                 <p id="menuItem"><a href="#workSection">Work</a></p>
             </div>
             <div class="menuItem">
+                <p id="menuItem"><a href="#educationSection">Education</a></p>
+            </div>
+            <div class="menuItem">
                 <p id="menuItem"><a href="#contactSection">Contact</a></p>
             </div>
         </div>
         <div class="subNav">
             <div class="subNavItem1">
-                <p class="l1"><a href="">LinkedIn</a></p>
+                <p class="l1"><a href="https://www.linkedin.com/in/tfortamal" target="_blank" rel="noopener">LinkedIn</a></p>
             </div>
             <div class="subNavItem2">
-                <p class="l1"><a href="">GitHub</a></p>
+                <p class="l1"><a href="https://github.com/tfortamal" target="_blank" rel="noopener">GitHub</a></p>
             </div>
             <div class="subNavItem3">
                 <p class="l1"><a href="">Instagram</a></p>
@@ -46,16 +49,10 @@
     </div>
 
     <section class="landingSection" id="landingSection">
-        <div class="landingVideo" aria-hidden="true">
-            <video autoplay muted loop playsinline preload="auto" id="heroVideo">
-                <source src="assets/video/hero-loop.mp4" type="video/mp4">
-            </video>
-        </div>
-
         <div class="landingContent">
             <div class="landingHeadlineContainer">
-                <h1 class="landingHeadline" data-text="Hi there, I'm Tamal, I tell stories with data">
-                    Hi there, <br>I'm Tamal,<br> I tell stories <br> with data
+                <h1 class="landingHeadline" data-text="Hi. I'm Tamal, I help machines to see beyond the pixels">
+                    Hi. <br>I'm Tamal,<br> I help machines <br> to see beyond the pixels
                 </h1>
             </div>
 
@@ -68,10 +65,45 @@
     <section class="workSection" id="workSection">
         <div class="workTitleContainer">
             <h1 class="workSectionTitle">Works</h1>
-            <p class="workSectionSubtitle">{ some of my featured projects } <img class="moji" src="https://dgrees.studio/wp-content/themes/dgrees2025/img/pixel-thunder.svg" alt=""></p>
+            <p class="workSectionSubtitle">{ some of my featured projects }</p>
         </div>
 
         <div class="projectShowcase">
+
+            <div class="projectCard0">
+                <div class="projectMedia">
+                    <img class="projectImage" src="assets/img/pcb.png" alt="PCB defect detection system project preview">
+                </div>
+
+                <div class="projectInfo">
+                    <div class="projectTitle">
+                        <h2 class="projectHeadline">PCB Defect Detection System</h2>
+                    </div>
+
+                    <div class="projectBottom">
+                        <div class="projectMeta">
+                            <div class="projectIndustry">
+                                <p class="metaLabel">Industry</p>
+                                <p class="metaValue">Electronics · Manufacturing QA</p>
+                            </div>
+
+                            <div class="projectToolsSkills">
+                                <p class="metaLabel">Tools</p>
+                                <p class="metaValue">YOLOv8n · PyTorch · ONNX · C++ · Quantization</p>
+                            </div>
+
+                            <div class="projectResult">
+                                <p class="metaLabel">Result</p>
+                                <p class="metaValue">0.93 mAP50 · 74% smaller (INT8) · 4.1x faster in C++</p>
+                            </div>
+                        </div>
+
+                        <div class="projectView">
+                            <a class="projectLink" href="https://github.com/tfortamal/PCB-Defect-Detection" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="projectCard1">
                 <div class="projectMedia">
@@ -97,7 +129,7 @@
                         </div>
 
                         <div class="projectView">
-                            <a class="projectLink" href="https://github.com/tamaldas" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
+                            <a class="projectLink" href="https://github.com/tfortamal" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
                         </div>
                     </div>
                 </div>
@@ -124,10 +156,15 @@
                                 <p class="metaLabel">Tools</p>
                                 <p class="metaValue">YOLOv8 · Ultralytics · Computer Vision · Python</p>
                             </div>
+
+                            <div class="projectResult">
+                                <p class="metaLabel">Result</p>
+                                <p class="metaValue">50,000+ images annotated · live production deployment</p>
+                            </div>
                         </div>
 
                         <div class="projectView">
-                            <a class="projectLink" href="https://github.com/tamaldas" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
+                            <a class="projectLink" href="https://github.com/tfortamal/Conveyor-Belt-Material-Classification-YOLOv8" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
                         </div>
                     </div>
                 </div>
@@ -154,10 +191,15 @@
                                 <p class="metaLabel">Tools</p>
                                 <p class="metaValue">Python · OpenCV · OCR · Object Detection</p>
                             </div>
+
+                            <div class="projectResult">
+                                <p class="metaLabel">Result</p>
+                                <p class="metaValue">Replaced manual logging · check-digit verified OCR</p>
+                            </div>
                         </div>
 
                         <div class="projectView">
-                            <a class="projectLink" href="https://github.com/tamaldas" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
+                            <a class="projectLink" href="https://github.com/tfortamal/Wagon-Number-Detection" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
                         </div>
                     </div>
                 </div>
@@ -187,7 +229,7 @@
                         </div>
 
                         <div class="projectView">
-                            <a class="projectLink" href="https://github.com/tamaldas" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
+                            <a class="projectLink" href="https://github.com/tfortamal/ObjectDetectionAndTrajectoryPrediction" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
                         </div>
                     </div>
                 </div>
@@ -223,36 +265,6 @@
                 </div>
             </div>
 
-            <div class="projectCard6">
-                <div class="projectMedia">
-                    <img class="projectImage" src="assets/img/tourism-ireland.jpg" alt="Tourism Ireland data warehouse project preview">
-                </div>
-
-                <div class="projectInfo">
-                    <div class="projectTitle">
-                        <h2 class="projectHeadline">Tourism Ireland Data Warehouse</h2>
-                    </div>
-
-                    <div class="projectBottom">
-                        <div class="projectMeta">
-                            <div class="projectIndustry">
-                                <p class="metaLabel">Industry</p>
-                                <p class="metaValue">Tourism Analytics · Data Warehousing</p>
-                            </div>
-
-                            <div class="projectToolsSkills">
-                                <p class="metaLabel">Tools</p>
-                                <p class="metaValue">PostgreSQL · Star Schema · ETL · BI</p>
-                            </div>
-                        </div>
-
-                        <div class="projectView">
-                            <a class="projectLink" href="https://github.com/tfortamal" target="_blank" rel="noopener">View project <span class="projectLinkIcon" aria-hidden="true">↗</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
 
         </div>
     </section>
@@ -266,17 +278,56 @@
             <div class="skills">
                 <div class="skill"><p>Python</p></div>
                 <hr id="skillHR">
+                <div class="skill"><p>C++</p></div>
+                <hr id="skillHR">
                 <div class="skill"><p>SQL</p></div>
                 <hr id="skillHR">
-                <div class="skill"><p>Tableau</p></div>
+                <div class="skill"><p>YOLOv8</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>PyTorch</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>OpenCV</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>EasyOCR</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>COCO/YOLO Formats</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>Anomaly Detection</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>Image Classification</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>ONNX</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>Quantization</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>Non-Maximum Suppression</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>Linux</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>Edge Devices</p></div>
+                <hr id="skillHR">
+                <div class="skill"><p>Matplotlib</p></div>
                 <hr id="skillHR">
                 <div class="skill"><p>Power BI</p></div>
                 <hr id="skillHR">
-                <div class="skill"><p>Computer Vision (YOLO, OpenCV)</p></div>
-                <hr id="skillHR">
-                <div class="skill"><p>HTML</p></div>
-                <hr id="skillHR">
-                <div class="skill"><p>CSS</p></div>
+                <div class="skill"><p>Tableau</p></div>
+            </div>
+
+
+            <div class="educationTitle" id="educationSection">
+                <p>Education</p>
+            </div>
+
+            <div class="educations">
+                <div class="education">
+                    <p>M.Sc. Data Analytics – Dublin Business School (First Class Honours)</p>
+                    <p>June 2026</p>
+                </div>
+                <hr>
+                <div class="education">
+                    <p>B.Sc. Computer Science – University of Calcutta (First Class Honours)</p>
+                    <p>2020–2023</p>
+                </div>
             </div>
 
 
@@ -288,11 +339,6 @@
                 <div class="experience">
                     <p>R&amp;D Software Developer – DivsoftSolutions India Pvt. Ltd.</p>
                     <p>2023–2024</p>
-                </div>
-                <hr>
-                <div class="experience">
-                    <p>Part-time Bar Staff – Sinnott&#39;s Bar, Dublin</p>
-                    <p>Present</p>
                 </div>
             </div>
 
@@ -314,16 +360,17 @@
         </div>
         <div class="contactInfos">
             <div class="info">
-                <a href="mailto:tamaldas.connect@gmail.com">EMAIL</a>
+                <a href="mailto:tamaldas.personal@gmail.com">EMAIL</a>
             </div>
             <div class="info">
-                <a href="callto:+916290389141">PHONE</a>
+                <a href="tel:+353857789972">PHONE</a>
             </div>
             <div class="info">
-                <a href="www.linkedin.com/in/tfortamal">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/tfortamal" target="_blank" rel="noopener">LinkedIn</a>
             </div>
         </div>
     </section>
+
     <a href="CV-Tamal-Das.pdf" class="btn btn--download" download="CV-Tamal-Das.pdf" aria-label="Download Tamal Das CV (PDF)">
         Download CV
     </a>
